@@ -5,52 +5,130 @@ struct AddItemView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var searchText = ""
     @State private var selectedItems = Set<String>()
-    @State private var selectedCategory: ProductCategory = .beverages
+    @State private var selectedCategory: ProductCategory?
+    
+    private let gridColumns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
     
     var body: some View {
         NavigationView {
-            VStack {
-                // Kategori seçim alanı
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(ProductCategory.allCases, id: \.self) { category in
-                            CategoryButton(
-                                title: category.rawValue,
-                                isSelected: selectedCategory == category
-                            ) {
-                                withAnimation {
-                                    selectedCategory = category
+            VStack(spacing: 0) {
+                // Arama ve ekleme alanı
+                HStack {
+                    TextField("Ürün ara veya yeni ürün ekle", text: $searchText)
+                        .textFieldStyle(CustomTextFieldStyle())
+                    
+                    if !searchText.isEmpty {
+                        Button(action: {
+                            addCustomItem()
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.blue)
+                                .font(.title2)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                
+                ScrollView {
+                    VStack(spacing: 16) {
+                        if !searchText.isEmpty {
+                            // Özel ürün ekleme önerisi
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Özel Ürün Ekle")
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                                
+                                Button(action: {
+                                    addCustomItem()
+                                }) {
+                                    HStack {
+                                        Text("\"\(searchText)\" ekle")
+                                            .lineLimit(1)
+                                        Spacer()
+                                        Image(systemName: "plus.circle")
+                                            .foregroundColor(.blue)
+                                            .font(.title3)
+                                            .padding(8)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                                }
+                                .padding(.horizontal)
+                            }
+                            
+                            if !filteredSuggestions.isEmpty {
+                                Text("Önerilen Ürünler")
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                                    .padding(.top, 8)
+                                
+                                LazyVStack(spacing: 8) {
+                                    ForEach(filteredSuggestions, id: \.id) { item in
+                                        ProductItemRow(
+                                            item: item,
+                                            isSelected: selectedItems.contains(item.name),
+                                            onTap: { toggleSelection(item.name) }
+                                        )
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                        } else if selectedCategory == nil {
+                            // Kategori grid görünümü
+                            LazyVGrid(columns: gridColumns, spacing: 16) {
+                                ForEach(ProductCategory.allCases, id: \.self) { category in
+                                    CategoryCard(category: category) {
+                                        withAnimation {
+                                            selectedCategory = category
+                                        }
+                                    }
+                                }
+                            }
+                            .padding()
+                        } else if let category = selectedCategory {
+                            // Seçili kategori başlığı
+                            HStack {
+                                Button(action: {
+                                    withAnimation {
+                                        selectedCategory = nil
+                                    }
+                                }) {
+                                    Image(systemName: "chevron.left")
+                                        .foregroundColor(.blue)
+                                }
+                                
+                                Text(category.rawValue)
+                                    .font(.headline)
+                                
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            
+                            // Ürün listesi
+                            if !filteredSuggestions.isEmpty {
+                                LazyVStack(spacing: 8) {
+                                    ForEach(filteredSuggestions, id: \.id) { item in
+                                        ProductItemRow(
+                                            item: item,
+                                            isSelected: selectedItems.contains(item.name),
+                                            onTap: { toggleSelection(item.name) }
+                                        )
+                                        .padding(.horizontal)
+                                    }
                                 }
                             }
                         }
+                        
+                        Spacer(minLength: 50)
                     }
-                    .padding(.horizontal)
-                }
-                .padding(.vertical, 8)
-                
-                // Arama alanı
-                TextField("Ürün ara veya filtrele", text: $searchText)
-                    .textFieldStyle(CustomTextFieldStyle())
-                    .padding(.horizontal)
-                
-                // Ürün listesi
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(filteredSuggestions, id: \.id) { item in
-                            ProductItemRow(
-                                item: item,
-                                isSelected: selectedItems.contains(item.name),
-                                onTap: { toggleSelection(item.name) }
-                            )
-                        }
-                    }
-                    .padding()
                 }
                 
                 if !selectedItems.isEmpty {
                     Text("\(selectedItems.count) ürün seçildi")
                         .foregroundColor(.gray)
-                        .padding(.bottom)
+                        .padding(.vertical, 8)
                 }
             }
             .navigationTitle("Ürün Ekle")
@@ -75,11 +153,25 @@ struct AddItemView: View {
     
     private var filteredSuggestions: [ProductItem] {
         let suggestions = ProductSuggestions.getSuggestions(for: .current())
-        let categoryItems = suggestions.filter { $0.category == selectedCategory }
-        if searchText.isEmpty {
-            return categoryItems
+        var filteredItems = suggestions
+        
+        if let category = selectedCategory {
+            filteredItems = filteredItems.filter { $0.category == category }
         }
-        return categoryItems.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        
+        if !searchText.isEmpty {
+            filteredItems = filteredItems.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+        
+        return filteredItems
+    }
+    
+    private func addCustomItem() {
+        let trimmedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedText.isEmpty {
+            selectedItems.insert(trimmedText)
+            searchText = ""
+        }
     }
     
     private func toggleSelection(_ item: String) {
@@ -97,20 +189,32 @@ struct AddItemView: View {
     }
 }
 
-struct CategoryButton: View {
-    let title: String
-    let isSelected: Bool
+struct CategoryCard: View {
+    let category: ProductCategory
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 15, weight: .medium))
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(isSelected ? Color.blue : Color(.systemGray6))
-                .foregroundColor(isSelected ? .white : .primary)
-                .cornerRadius(20)
+            VStack {
+                Circle()
+                    .fill(category.color.opacity(0.2))
+                    .overlay(
+                        Image(systemName: category.icon)
+                            .font(.system(size: 30))
+                            .foregroundColor(category.color)
+                    )
+                    .frame(width: 60, height: 60)
+                
+                Text(category.rawValue)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
         }
     }
 }

@@ -120,13 +120,32 @@ private struct EmptyStateView: View {
 private struct ListCardView: View {
     let list: ShoppingList
     
+    private func getCategoryIcon() -> String {
+        switch list.category {
+        case "Gıda":
+            return "cart.fill"
+        case "Elektronik":
+            return "laptopcomputer"
+        case "Giyim":
+            return "tshirt.fill"
+        case "Temizlik":
+            return "spray.fill"
+        default:
+            return "list.bullet"
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(list.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
+                    HStack {
+                        Image(systemName: getCategoryIcon())
+                            .foregroundColor(.blue)
+                        Text(list.name)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                    }
                     
                     Text("\(list.items.count) ürün")
                         .font(.subheadline)
@@ -159,8 +178,7 @@ private struct ListCardView: View {
             }
         }
         .padding()
-        .frame(height: 150)
-        .frame(maxWidth: .infinity)
+        .frame(width: UIScreen.main.bounds.width / 2 - 24, height: 160)
         .background(Color(.systemBackground))
         .cornerRadius(15)
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
