@@ -33,68 +33,61 @@ struct CreateListView: View {
                     
                     // Öneriler - liste adının hemen altında
                     ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 8) {
-                            ForEach(suggestedLists, id: \.self) { suggestion in
-                                Button {
+                        HStack(spacing: 12) {
+                            ForEach(["Market", "Pazar", "Kırtasiye", "Teknoloji"], id: \.self) { suggestion in
+                                Button(action: {
                                     listName = suggestion
-                                } label: {
+                                }) {
                                     Text(suggestion)
                                         .font(.subheadline)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 6)
-                                        .background(Color(.systemGray6))
-                                        .clipShape(Capsule())
+                                        .foregroundColor(.blue)
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 8)
+                                        .background(Color.blue.opacity(0.1))
+                                        .cornerRadius(20)
                                 }
-                                .foregroundColor(.primary)
                             }
                         }
+                        .padding(.vertical, 8)
                     }
                 }
-                .padding(.horizontal)
+                .padding()
                 
                 Spacer()
                 
                 // Oluştur butonu
-                Button(action: createList) {
-                    HStack {
-                        Text("Liste Oluştur")
-                            .fontWeight(.semibold)
-                        Image(systemName: "arrow.right")
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(listName.isEmpty ? Color.gray : Color.blue)
-                    .cornerRadius(15)
+                Button(action: {
+                    viewModel.addNewList(name: listName)
+                    selectedTab = 0
+                }) {
+                    Text("Liste Oluştur")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            listName.isEmpty ?
+                            LinearGradient(
+                                gradient: Gradient(colors: [.gray, .gray]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ) :
+                            LinearGradient(
+                                gradient: Gradient(colors: [.blue, .blue.opacity(0.8)]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .cornerRadius(15)
+                        .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 3)
                 }
                 .disabled(listName.isEmpty)
-                .padding()
+                .padding(.horizontal, 40)
+                .padding(.bottom, 20)
             }
-            .navigationTitle("Yeni Liste Oluştur")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("İptal") {
-                        selectedTab = 0
-                    }
-                }
-            }
+            .navigationTitle("Yeni Liste")
         }
     }
-    
-    private func createList() {
-        guard !listName.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-        viewModel.addNewList(name: listName)
-        selectedTab = 0 // Ana sayfaya dön
-    }
-    
-    private let suggestedLists = [
-        "Market Alışverişi",
-        "Haftalık Alışveriş",
-        "Kırtasiye",
-        "Ev İhtiyaçları",
-        "Piknik"
-    ]
 }
 
 // TextField stili

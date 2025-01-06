@@ -4,13 +4,11 @@ struct ShoppingList: Identifiable, Codable {
     let id: UUID
     var name: String
     var items: [ShoppingItem]
-    var category: String
     
-    init(id: UUID = UUID(), name: String, items: [ShoppingItem] = [], category: String = "Genel") {
+    init(id: UUID = UUID(), name: String, items: [ShoppingItem] = []) {
         self.id = id
         self.name = name
         self.items = items
-        self.category = category
     }
 }
 

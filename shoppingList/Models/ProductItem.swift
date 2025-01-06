@@ -27,7 +27,7 @@ enum ProductCategory: String, CaseIterable {
         case .basicFoods: return "basket.fill"
         case .meatAndProtein: return "fork.knife"
         case .snacks: return "birthday.cake.fill"
-        case .cleaning: return "spray.fill"
+        case .cleaning: return "bubbles.and.sparkles"
         case .personalCare: return "heart.fill"
         }
     }

@@ -211,7 +211,7 @@ struct CategoryCard: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: 140)
             .padding()
             .background(Color(.systemGray6))
             .cornerRadius(12)
