@@ -11,6 +11,7 @@ struct HomeView: View {
     @ObservedObject var viewModel: ShoppingListViewModel
     @State private var showingNewListSheet = false
     @State private var listToDelete: ShoppingList? = nil
+    @State private var listToOpen: ShoppingList? = nil
     
     var body: some View {
         NavigationStack {
@@ -40,6 +41,14 @@ struct HomeView: View {
                                             }
                                         }
                                 }
+                                .onAppear {
+                                    if listToOpen?.id == list.id {
+                                        listToOpen = nil
+                                        DispatchQueue.main.async {
+                                            showingNewListSheet = false
+                                        }
+                                    }
+                                }
                             }
                         }
                         .padding(.horizontal, 20)
@@ -49,14 +58,6 @@ struct HomeView: View {
             }
             .navigationTitle("Alışveriş Listeleri")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingNewListSheet = true
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(Color.theme.mintPrimary)
-                    }
-                }
             }
         }
         .sheet(isPresented: $showingNewListSheet) {

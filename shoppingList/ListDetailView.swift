@@ -4,6 +4,7 @@ struct ListDetailView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var searchText = ""
     @State private var showingAddItem = false
+    @Environment(\.presentationMode) var presentationMode
     
     var filteredItems: [ShoppingItem] {
         if searchText.isEmpty {
@@ -80,6 +81,21 @@ struct ListDetailView: View {
             }
         }
         .navigationTitle(viewModel.list.name)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                        Text("Geri")
+                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                    }
+                }
+            }
+        }
         .sheet(isPresented: $showingAddItem) {
             AddItemView(viewModel: viewModel)
         }
