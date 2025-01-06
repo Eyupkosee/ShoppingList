@@ -15,12 +15,14 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                Color.theme.backgroundColor
+                    .ignoresSafeArea()
+                
                 if viewModel.shoppingLists.isEmpty {
                     EmptyStateView(showNewListSheet: $showingNewListSheet)
                 } else {
                     ScrollView {
                         LazyVGrid(columns: [
-                            GridItem(.flexible()),
                             GridItem(.flexible())
                         ], spacing: 16) {
                             ForEach(viewModel.shoppingLists) { list in
@@ -40,11 +42,25 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .padding()
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
                     }
                 }
             }
             .navigationTitle("Alışveriş Listeleri")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingNewListSheet = true
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(Color.theme.mintPrimary)
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingNewListSheet) {
+            CreateListView(viewModel: viewModel, selectedTab: .constant(0))
         }
         .alert("Listeyi Sil", isPresented: .init(
             get: { listToDelete != nil },
@@ -76,16 +92,17 @@ private struct EmptyStateView: View {
         VStack(spacing: 24) {
             Image(systemName: "cart.circle.fill")
                 .font(.system(size: 80))
-                .foregroundStyle(.blue.opacity(0.8))
+                .foregroundStyle(Color.theme.mintPrimary)
             
             VStack(spacing: 8) {
                 Text("Alışveriş Listesi Yok")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(Color.theme.primaryText)
                 
                 Text("İlk alışveriş listenizi oluşturarak başlayın")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color.theme.secondaryText)
                     .multilineTextAlignment(.center)
             }
             
@@ -100,15 +117,9 @@ private struct EmptyStateView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [.blue, .blue.opacity(0.8)]),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .background(Color.theme.mintPrimary)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                .shadow(color: .blue.opacity(0.3), radius: 5, x: 0, y: 3)
+                .shadow(color: Color.theme.mintPrimary.opacity(0.3), radius: 5, x: 0, y: 3)
             }
             .padding(.horizontal, 40)
         }
@@ -125,12 +136,13 @@ private struct ListCardView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(list.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.theme.primaryText)
                     
                     Text("\(list.items.count) ürün")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.theme.secondaryText)
                 }
                 Spacer()
                 
@@ -143,27 +155,19 @@ private struct ListCardView: View {
             if !list.items.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 8) {
-                        ForEach(list.items.prefix(4)) { item in
+                        ForEach(list.items) { item in
                             ItemBadge(name: item.name, isCompleted: item.isCompleted)
-                        }
-                        if list.items.count > 4 {
-                            Text("+\(list.items.count - 4)")
-                                .font(.caption)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
                         }
                     }
                 }
+                .frame(height: 35)
             }
         }
         .padding()
-        .frame(height: 150)
         .frame(maxWidth: .infinity)
-        .background(Color(.systemBackground))
+        .background(Color.theme.cardBackground)
         .cornerRadius(15)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
 }
 
@@ -180,19 +184,20 @@ private struct CircularProgressView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.gray.opacity(0.2), lineWidth: 4)
+                .stroke(Color.theme.progressBackground, lineWidth: 4)
             
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                .stroke(Color.theme.progressForeground, style: StrokeStyle(lineWidth: 4, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.easeOut, value: progress)
             
             Text("\(Int(progress * 100))%")
-                .font(.caption2)
-                .fontWeight(.medium)
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundColor(Color.theme.primaryText)
         }
-        .frame(width: 40, height: 40)
+        .frame(width: 45, height: 45)
     }
 }
 
@@ -203,12 +208,16 @@ private struct ItemBadge: View {
     
     var body: some View {
         Text(name)
-            .font(.caption)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(isCompleted ? Color.green.opacity(0.1) : Color.gray.opacity(0.1))
-            .foregroundColor(isCompleted ? .green : .primary)
-            .cornerRadius(8)
+            .font(.callout)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                isCompleted ? 
+                Color.theme.tabBarBackground :
+                Color.gray.opacity(0.15)
+            )
+            .foregroundColor(isCompleted ? Color.green : Color.gray)
+            .cornerRadius(20)
     }
 }
 

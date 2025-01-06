@@ -139,6 +139,7 @@ struct AddItemView: View {
                         selectedItems.removeAll()
                         dismiss()
                     }
+                    .foregroundColor(Color.theme.mintPrimary)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Ekle") {
@@ -146,6 +147,7 @@ struct AddItemView: View {
                         dismiss()
                     }
                     .disabled(selectedItems.isEmpty)
+                    .foregroundColor(selectedItems.isEmpty ? .gray : Color.theme.mintPrimary)
                 }
             }
         }

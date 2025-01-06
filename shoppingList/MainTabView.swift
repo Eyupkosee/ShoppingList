@@ -18,5 +18,29 @@ struct MainTabView: View {
                 }
                 .tag(1)
         }
+        .onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(Color.theme.tabBarBackground)
+            
+            // TabBar gölgesi kaldırma
+            appearance.shadowColor = nil
+            
+            // Seçili olmayan durum için renk
+            appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Color.theme.secondaryText)
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(Color.theme.secondaryText)]
+            
+            // Seçili durum için renk
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Color.theme.mintPrimary)
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Color.theme.mintPrimary)]
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
+        .background(Color.theme.backgroundColor)
     }
+}
+
+#Preview {
+    MainTabView()
 } 
