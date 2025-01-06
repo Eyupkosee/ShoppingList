@@ -8,7 +8,7 @@
 import Foundation
 
 class ListDetailViewModel: ObservableObject {
-    @Published var list: ShoppingList
+    @Published private(set) var list: ShoppingList
     private let dataManager: DataManager
     
     init(list: ShoppingList, dataManager: DataManager) {
@@ -17,39 +17,24 @@ class ListDetailViewModel: ObservableObject {
     }
     
     func addItem(name: String) {
-        let item = ShoppingItem(name: name)
-        list.items.append(item)
-        saveChanges()
+        let newItem = ShoppingItem(name: name)
+        list.items.append(newItem)
+        dataManager.updateList(list)
+        NotificationCenter.default.post(name: .listUpdated, object: nil)
     }
     
-    func toggleItemCompletion(item: ShoppingItem) {
+    func toggleItem(_ item: ShoppingItem) {
         if let index = list.items.firstIndex(where: { $0.id == item.id }) {
             list.items[index].isCompleted.toggle()
-            objectWillChange.send()
-            
-            DispatchQueue.main.async {
-                self.saveChanges()
-            }
-        }
-    }
-    
-    func deleteItem(at indexSet: IndexSet) {
-        list.items.remove(atOffsets: indexSet)
-        objectWillChange.send()
-        
-        DispatchQueue.main.async {
-            self.saveChanges()
-        }
-    }
-    
-    private func saveChanges() {
-        if let index = dataManager.shoppingLists.firstIndex(where: { $0.id == list.id }) {
-            dataManager.shoppingLists[index] = list
-            dataManager.saveLists()
-            objectWillChange.send()
-            
+            dataManager.updateList(list)
             NotificationCenter.default.post(name: .listUpdated, object: nil)
         }
+    }
+    
+    func deleteItems(at indexSet: IndexSet) {
+        list.items.remove(atOffsets: indexSet)
+        dataManager.updateList(list)
+        NotificationCenter.default.post(name: .listUpdated, object: nil)
     }
 }
 

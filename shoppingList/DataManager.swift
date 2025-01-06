@@ -30,4 +30,11 @@ class DataManager: ObservableObject {
         shoppingLists.remove(atOffsets: indexSet)
         saveLists()
     }
+    
+    func updateList(_ updatedList: ShoppingList) {
+        if let index = shoppingLists.firstIndex(where: { $0.id == updatedList.id }) {
+            shoppingLists[index] = updatedList
+            saveLists()
+        }
+    }
 } 

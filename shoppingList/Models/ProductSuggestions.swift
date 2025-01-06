@@ -5,14 +5,10 @@ enum SupportedLanguage: String {
     case turkish = "tr"
     
     static func current() -> SupportedLanguage {
-        // Önce sistem dilini kontrol et
         let languageCode = Locale.preferredLanguages.first?.prefix(2).lowercased() ?? "en"
-        
-        // Türkçe dil kodlarını kontrol et
         if languageCode == "tr" {
             return .turkish
         }
-        
         return .english
     }
 }
@@ -21,123 +17,138 @@ struct ProductSuggestions {
     static func getSuggestions(for language: SupportedLanguage) -> [ProductItem] {
         switch language {
         case .english:
-            return english.map { ProductItem(name: $0) }
+            return english
         case .turkish:
-            return turkish.map { ProductItem(name: $0) }
+            return turkish
         }
     }
     
-    // İngilizce öneriler
-    private static let english = [
-        // Beverages (Non-Alcoholic)
-        "Water", "Milk", "Coffee", "Tea", "Orange Juice", "Apple Juice", "Grape Juice",
-        "Soda", "Cola", "Lemonade", "Ice Tea", "Hot Chocolate", "Energy Drink",
-        "Mineral Water", "Green Tea", "Smoothie", "Milkshake", "Ayran",
-        
-        // Fruits
-        "Apple", "Banana", "Orange", "Grape", "Strawberry", "Pear", "Peach",
-        "Pineapple", "Mango", "Kiwi", "Plum", "Cherry", "Watermelon", "Melon",
-        "Pomegranate", "Fig", "Apricot", "Mandarin", "Lemon", "Lime",
-        "Raspberry", "Blackberry", "Blueberry", "Cranberry",
-        
-        // Vegetables
-        "Tomato", "Potato", "Onion", "Carrot", "Cucumber", "Lettuce", "Pepper",
-        "Broccoli", "Spinach", "Garlic", "Corn", "Mushroom", "Eggplant", "Celery",
-        "Cabbage", "Cauliflower", "Green Beans", "Peas", "Asparagus", "Zucchini",
-        "Radish", "Beetroot", "Pumpkin", "Sweet Potato",
-        
-        // Basic Foods & Grains
-        "Bread", "Rice", "Pasta", "Flour", "Sugar", "Salt", "Oil", "Eggs",
-        "Cheese", "Butter", "Margarine", "Honey", "Jam", "Peanut Butter",
-        "Cereal", "Oatmeal", "Pancake Mix", "Waffle Mix", "Noodles", "Crackers",
-        
-        // Dairy & Alternatives
-        "Yogurt", "Cream", "Milk", "Soy Milk", "Almond Milk", "Coconut Milk",
-        "Cottage Cheese", "Cream Cheese", "Mozzarella", "Cheddar", "Swiss Cheese",
-        "Ice Cream", "Sour Cream", "Whipped Cream",
-        
-        // Meat & Protein
-        "Chicken", "Turkey", "Fish", "Tuna", "Salmon", "Shrimp",
-        "Eggs", "Tofu", "Beans", "Lentils", "Chickpeas",
-        
-        // Snacks & Sweets
-        "Chocolate", "Candy", "Cookies", "Chips", "Popcorn", "Nuts",
-        "Dried Fruits", "Granola Bars", "Crackers", "Pretzels",
-        "Fruit Snacks", "Rice Cakes", "Trail Mix",
-        
-        // Baking
-        "Flour", "Sugar", "Baking Powder", "Baking Soda", "Vanilla Extract",
-        "Cocoa Powder", "Yeast", "Cornstarch", "Food Coloring",
-        
-        // Condiments & Sauces
-        "Ketchup", "Mustard", "Mayonnaise", "Hot Sauce", "Soy Sauce",
-        "Olive Oil", "Vinegar", "Salad Dressing", "BBQ Sauce",
-        
-        // Cleaning Supplies
-        "Soap", "Detergent", "Shampoo", "Toothpaste", "Paper Towels",
-        "Toilet Paper", "Dish Soap", "Sponges", "Trash Bags",
-        "Glass Cleaner", "Floor Cleaner", "Air Freshener",
-        
-        // Personal Care
-        "Toothbrush", "Deodorant", "Lotion", "Sunscreen", "Hand Sanitizer",
-        "Tissues", "Cotton Swabs", "Band-Aids", "Vitamins", "Shaving Cream",
-        "Hair Brush", "Dental Floss", "Face Wash", "Body Wash", "Hand Soap"
-    ].sorted()
-    
-    // Türkçe öneriler
-    private static let turkish = [
-        // İçecekler (Alkolsüz)
-        "Su", "Süt", "Kahve", "Çay", "Portakal Suyu", "Elma Suyu", "Üzüm Suyu",
-        "Soda", "Kola", "Limonata", "Soğuk Çay", "Sıcak Çikolata", "Enerji İçeceği",
-        "Maden Suyu", "Yeşil Çay", "Smoothie", "Milkshake", "Ayran",
+    private static let turkish: [ProductItem] = [
+        // İçecekler
+        ProductItem(name: "Su", category: .beverages),
+        ProductItem(name: "Süt", category: .beverages),
+        ProductItem(name: "Kahve", category: .beverages),
+        ProductItem(name: "Çay", category: .beverages),
+        ProductItem(name: "Portakal Suyu", category: .beverages),
+        ProductItem(name: "Ayran", category: .beverages),
+        ProductItem(name: "Maden Suyu", category: .beverages),
         
         // Meyveler
-        "Elma", "Muz", "Portakal", "Üzüm", "Çilek", "Armut", "Şeftali",
-        "Ananas", "Mango", "Kivi", "Erik", "Kiraz", "Karpuz", "Kavun",
-        "Nar", "İncir", "Kayısı", "Mandalina", "Limon", "Misket Limonu",
-        "Ahududu", "Böğürtlen", "Yaban Mersini", "Kızılcık",
+        ProductItem(name: "Elma", category: .fruits),
+        ProductItem(name: "Muz", category: .fruits),
+        ProductItem(name: "Portakal", category: .fruits),
+        ProductItem(name: "Üzüm", category: .fruits),
+        ProductItem(name: "Çilek", category: .fruits),
+        ProductItem(name: "Karpuz", category: .fruits),
+        ProductItem(name: "Kavun", category: .fruits),
         
         // Sebzeler
-        "Domates", "Patates", "Soğan", "Havuç", "Salatalık", "Marul", "Biber",
-        "Brokoli", "Ispanak", "Sarımsak", "Mısır", "Mantar", "Patlıcan", "Kereviz",
-        "Lahana", "Karnabahar", "Taze Fasulye", "Bezelye", "Kuşkonmaz", "Kabak",
-        "Turp", "Pancar", "Balkabağı", "Tatlı Patates",
+        ProductItem(name: "Domates", category: .vegetables),
+        ProductItem(name: "Patates", category: .vegetables),
+        ProductItem(name: "Soğan", category: .vegetables),
+        ProductItem(name: "Salatalık", category: .vegetables),
+        ProductItem(name: "Biber", category: .vegetables),
+        ProductItem(name: "Patlıcan", category: .vegetables),
+        ProductItem(name: "Havuç", category: .vegetables),
         
-        // Temel Gıdalar & Tahıllar
-        "Ekmek", "Pirinç", "Makarna", "Un", "Şeker", "Tuz", "Yağ", "Yumurta",
-        "Peynir", "Tereyağı", "Margarin", "Bal", "Reçel", "Fıstık Ezmesi",
-        "Mısır Gevreği", "Yulaf", "Krep Karışımı", "Waffle Karışımı", "Erişte", "Kraker",
+        // Süt Ürünleri
+        ProductItem(name: "Peynir", category: .dairy),
+        ProductItem(name: "Yoğurt", category: .dairy),
+        ProductItem(name: "Tereyağı", category: .dairy),
+        ProductItem(name: "Kaşar", category: .dairy),
+        ProductItem(name: "Krem Peynir", category: .dairy),
         
-        // Süt Ürünleri & Alternatifleri
-        "Yoğurt", "Krema", "Süt", "Soya Sütü", "Badem Sütü", "Hindistan Cevizi Sütü",
-        "Lor Peyniri", "Krem Peynir", "Mozarella", "Kaşar Peyniri", "İsviçre Peyniri",
-        "Dondurma", "Ekşi Krema", "Krem Şanti",
+        // Temel Gıdalar
+        ProductItem(name: "Ekmek", category: .basicFoods),
+        ProductItem(name: "Pirinç", category: .basicFoods),
+        ProductItem(name: "Makarna", category: .basicFoods),
+        ProductItem(name: "Un", category: .basicFoods),
+        ProductItem(name: "Şeker", category: .basicFoods),
+        ProductItem(name: "Tuz", category: .basicFoods),
         
-        // Et & Protein
-        "Tavuk", "Hindi", "Balık", "Ton Balığı", "Somon", "Karides",
-        "Yumurta", "Tofu", "Kuru Fasulye", "Mercimek", "Nohut",
+        // Et ve Protein
+        ProductItem(name: "Tavuk", category: .meatAndProtein),
+        ProductItem(name: "Kıyma", category: .meatAndProtein),
+        ProductItem(name: "Balık", category: .meatAndProtein),
+        ProductItem(name: "Yumurta", category: .meatAndProtein),
         
-        // Atıştırmalıklar & Tatlılar
-        "Çikolata", "Şeker", "Kurabiye", "Cips", "Patlamış Mısır", "Kuruyemiş",
-        "Kuru Meyveler", "Granola Bar", "Kraker", "Tuzlu Kraker",
-        "Meyve Cipsi", "Pirinç Patlağı", "Karışık Kuruyemiş",
+        // Atıştırmalıklar
+        ProductItem(name: "Cips", category: .snacks),
+        ProductItem(name: "Çikolata", category: .snacks),
+        ProductItem(name: "Bisküvi", category: .snacks),
+        ProductItem(name: "Kuruyemiş", category: .snacks),
         
-        // Hamur İşi Malzemeleri
-        "Un", "Şeker", "Kabartma Tozu", "Karbonat", "Vanilya",
-        "Kakao", "Maya", "Nişasta", "Gıda Boyası",
-        
-        // Soslar & Çeşniler
-        "Ketçap", "Hardal", "Mayonez", "Acı Sos", "Soya Sosu",
-        "Zeytinyağı", "Sirke", "Salata Sosu", "Barbekü Sosu",
-        
-        // Temizlik Malzemeleri
-        "Sabun", "Deterjan", "Şampuan", "Diş Macunu", "Kağıt Havlu",
-        "Tuvalet Kağıdı", "Bulaşık Deterjanı", "Sünger", "Çöp Poşeti",
-        "Cam Temizleyici", "Yer Temizleyici", "Oda Kokusu",
+        // Temizlik
+        ProductItem(name: "Deterjan", category: .cleaning),
+        ProductItem(name: "Bulaşık Deterjanı", category: .cleaning),
+        ProductItem(name: "Çamaşır Suyu", category: .cleaning),
+        ProductItem(name: "Peçete", category: .cleaning),
+        ProductItem(name: "Çöp Poşeti", category: .cleaning),
         
         // Kişisel Bakım
-        "Diş Fırçası", "Deodorant", "Losyon", "Güneş Kremi", "El Dezenfektanı",
-        "Mendil", "Kulak Çubuğu", "Yara Bandı", "Vitaminler", "Tıraş Köpüğü",
-        "Saç Fırçası", "Diş İpi", "Yüz Temizleyici", "Duş Jeli", "El Sabunu"
-    ].sorted()
+        ProductItem(name: "Şampuan", category: .personalCare),
+        ProductItem(name: "Diş Macunu", category: .personalCare),
+        ProductItem(name: "Sabun", category: .personalCare),
+        ProductItem(name: "Tuvalet Kağıdı", category: .personalCare),
+        ProductItem(name: "Islak Mendil", category: .personalCare)
+    ]
+    
+    private static let english: [ProductItem] = [
+        // Beverages
+        ProductItem(name: "Water", category: .beverages),
+        ProductItem(name: "Milk", category: .beverages),
+        ProductItem(name: "Coffee", category: .beverages),
+        ProductItem(name: "Tea", category: .beverages),
+        ProductItem(name: "Orange Juice", category: .beverages),
+        ProductItem(name: "Soda", category: .beverages),
+        
+        // Fruits
+        ProductItem(name: "Apple", category: .fruits),
+        ProductItem(name: "Banana", category: .fruits),
+        ProductItem(name: "Orange", category: .fruits),
+        ProductItem(name: "Grape", category: .fruits),
+        ProductItem(name: "Strawberry", category: .fruits),
+        
+        // Vegetables
+        ProductItem(name: "Tomato", category: .vegetables),
+        ProductItem(name: "Potato", category: .vegetables),
+        ProductItem(name: "Onion", category: .vegetables),
+        ProductItem(name: "Cucumber", category: .vegetables),
+        ProductItem(name: "Carrot", category: .vegetables),
+        
+        // Dairy
+        ProductItem(name: "Cheese", category: .dairy),
+        ProductItem(name: "Yogurt", category: .dairy),
+        ProductItem(name: "Butter", category: .dairy),
+        
+        // Basic Foods
+        ProductItem(name: "Bread", category: .basicFoods),
+        ProductItem(name: "Rice", category: .basicFoods),
+        ProductItem(name: "Pasta", category: .basicFoods),
+        ProductItem(name: "Flour", category: .basicFoods),
+        
+        // Meat and Protein
+        ProductItem(name: "Chicken", category: .meatAndProtein),
+        ProductItem(name: "Ground Beef", category: .meatAndProtein),
+        ProductItem(name: "Fish", category: .meatAndProtein),
+        ProductItem(name: "Eggs", category: .meatAndProtein),
+        
+        // Snacks
+        ProductItem(name: "Chips", category: .snacks),
+        ProductItem(name: "Chocolate", category: .snacks),
+        ProductItem(name: "Cookies", category: .snacks),
+        ProductItem(name: "Nuts", category: .snacks),
+        
+        // Cleaning
+        ProductItem(name: "Detergent", category: .cleaning),
+        ProductItem(name: "Dish Soap", category: .cleaning),
+        ProductItem(name: "Bleach", category: .cleaning),
+        ProductItem(name: "Paper Towels", category: .cleaning),
+        
+        // Personal Care
+        ProductItem(name: "Shampoo", category: .personalCare),
+        ProductItem(name: "Toothpaste", category: .personalCare),
+        ProductItem(name: "Soap", category: .personalCare),
+        ProductItem(name: "Toilet Paper", category: .personalCare)
+    ]
 }

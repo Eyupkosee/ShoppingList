@@ -49,10 +49,10 @@ struct ListDetailView: View {
                     LazyVStack(spacing: 8) {
                         ForEach(filteredItems) { item in
                             ItemRow(item: item) {
-                                viewModel.toggleItemCompletion(item: item)
+                                viewModel.toggleItem(item)
                             } onDelete: {
                                 if let index = viewModel.list.items.firstIndex(where: { $0.id == item.id }) {
-                                    viewModel.deleteItem(at: IndexSet([index]))
+                                    viewModel.deleteItems(at: IndexSet([index]))
                                 }
                             }
                         }
@@ -125,6 +125,7 @@ struct AddItemView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var newItemName = ""
     @FocusState private var isInputFocused: Bool
+    @State private var selectedItems = Set<String>()
     
     // Önerileri filtrele
     private var filteredSuggestions: [ProductItem] {
@@ -152,21 +153,21 @@ struct AddItemView: View {
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(filteredSuggestions) { suggestion in
-                            Button(action: {
-                                newItemName = suggestion.name
-                            }) {
-                                HStack {
-                                    Text(suggestion.name)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "plus.circle.fill")
-                                        .foregroundColor(.blue)
+                            HStack {
+                                Text(suggestion.name)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Button(action: {
+                                    toggleSelection(suggestion.name)
+                                }) {
+                                    Image(systemName: selectedItems.contains(suggestion.name) ? "checkmark.circle.fill" : "plus.circle")
+                                        .foregroundColor(selectedItems.contains(suggestion.name) ? .green : .blue)
                                 }
-                                .padding()
-                                .background(Color(.systemBackground))
-                                .cornerRadius(12)
-                                .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 2)
                             }
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 2)
                         }
                     }
                     .padding(.horizontal)
@@ -186,18 +187,19 @@ struct AddItemView: View {
                     Button {
                         if !newItemName.isEmpty {
                             viewModel.addItem(name: newItemName)
-                            dismiss()
                         }
+                        addSelectedItems()
+                        dismiss()
                     } label: {
                         Text("Ekle")
                             .bold()
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(newItemName.isEmpty ? Color.blue.opacity(0.5) : Color.blue)
+                            .background((selectedItems.isEmpty && newItemName.isEmpty) ? Color.blue.opacity(0.5) : Color.blue)
                             .cornerRadius(12)
                     }
-                    .disabled(newItemName.isEmpty)
+                    .disabled(selectedItems.isEmpty && newItemName.isEmpty)
                 }
                 .padding(.horizontal)
             }
@@ -206,4 +208,20 @@ struct AddItemView: View {
             }
         }
     }
-} 
+    
+    // Yeni fonksiyonlar
+    private func toggleSelection(_ item: String) {
+        if selectedItems.contains(item) {
+            selectedItems.remove(item)
+        } else {
+            selectedItems.insert(item)
+        }
+    }
+    
+    private func addSelectedItems() {
+        for itemName in selectedItems {
+            viewModel.addItem(name: itemName)
+        }
+        selectedItems.removeAll()
+    }
+}
