@@ -3,7 +3,8 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab = 0
     @StateObject private var sharedViewModel = ShoppingListViewModel()
-    
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+
     var body: some View {
         TabView(selection: $selectedTab) {
             HomeView(viewModel: sharedViewModel)
