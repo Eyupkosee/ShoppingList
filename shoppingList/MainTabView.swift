@@ -31,8 +31,8 @@ struct MainTabView: View {
             appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(Color.theme.secondaryText)]
             
             // Seçili durum için renk
-            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Color.theme.mintPrimary)
-            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Color.theme.mintPrimary)]
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Color.blue.opacity(0.7))
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Color.blue.opacity(0.7))]
             
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance

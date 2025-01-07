@@ -24,6 +24,7 @@
 		C89D19D12D2B32BE00D53D46 /* CreateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D19D02D2B32BE00D53D46 /* CreateListView.swift */; };
 		C89D19D42D2B48BD00D53D46 /* ProductSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D19D32D2B48BD00D53D46 /* ProductSuggestions.swift */; };
 		C89D19D62D2B4AAF00D53D46 /* ProductItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D19D52D2B4AAF00D53D46 /* ProductItem.swift */; };
+		C8DCF5942D2D738800D75CB3 /* PDFPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DCF5932D2D738800D75CB3 /* PDFPreviewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		C89D19D02D2B32BE00D53D46 /* CreateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListView.swift; sourceTree = "<group>"; };
 		C89D19D32D2B48BD00D53D46 /* ProductSuggestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSuggestions.swift; sourceTree = "<group>"; };
 		C89D19D52D2B4AAF00D53D46 /* ProductItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductItem.swift; sourceTree = "<group>"; };
+		C8DCF5932D2D738800D75CB3 /* PDFPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFPreviewView.swift; path = shoppingList/PDFPreviewView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				C89D19CE2D2B32A800D53D46 /* HomeView.swift */,
 				C88985712D2C382400D51455 /* AddItemView.swift */,
 				C89D19B72D2B2E8600D53D46 /* ListDetailView.swift */,
+				C8DCF5932D2D738800D75CB3 /* PDFPreviewView.swift */,
 				C89D19D02D2B32BE00D53D46 /* CreateListView.swift */,
 			);
 			path = Views;
@@ -206,6 +209,7 @@
 				C89D19D62D2B4AAF00D53D46 /* ProductItem.swift in Sources */,
 				C89D19BE2D2B2E9500D53D46 /* ShoppingList.swift in Sources */,
 				C89D19CA2D2B324600D53D46 /* MainTabView.swift in Sources */,
+				C8DCF5942D2D738800D75CB3 /* PDFPreviewView.swift in Sources */,
 				C89D19CF2D2B32A800D53D46 /* HomeView.swift in Sources */,
 				C89D19BC2D2B2E8600D53D46 /* DataManager.swift in Sources */,
 				C89D19BB2D2B2E8600D53D46 /* NewListView.swift in Sources */,

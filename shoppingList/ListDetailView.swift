@@ -4,6 +4,7 @@ struct ListDetailView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var searchText = ""
     @State private var showingAddItem = false
+    @State private var showingPDFPreview = false
     @Environment(\.presentationMode) var presentationMode
     
     var filteredItems: [ShoppingItem] {
@@ -72,7 +73,7 @@ struct ListDetailView: View {
                             .font(.title2.bold())
                             .foregroundColor(.white)
                             .frame(width: 60, height: 60)
-                            .background(Color.blue)
+                            .background(Color.green)
                             .clipShape(Circle())
                             .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
                     }
@@ -93,6 +94,12 @@ struct ListDetailView: View {
                         Text("Geri")
                             .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
                     }
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: PDFPreviewView(viewModel: viewModel)) {
+                    Image(systemName: "chevron.backward")
+                        .foregroundColor(.white)
                 }
             }
         }

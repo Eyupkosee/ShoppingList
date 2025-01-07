@@ -34,7 +34,7 @@ struct CreateListView: View {
                     // Öneriler
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            ForEach(["Market", "Pazar", "Kırtasiye", "Teknoloji"], id: \.self) { suggestion in
+                            ForEach(["Market", "Pazar", "Piknik", "Gezi"], id: \.self) { suggestion in
                                 Button(action: {
                                     listName = suggestion
                                 }) {
