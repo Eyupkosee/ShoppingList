@@ -3,6 +3,7 @@ import SwiftUI
 struct ListDetailView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var showingAddItem = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ZStack {
@@ -42,7 +43,26 @@ struct ListDetailView: View {
         .toolbarBackground(Color.theme.mintPrimary, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(Color.theme.mintPrimary)
+                        Text("Geri")
+                            .foregroundColor(Color.theme.mintPrimary)
+                    }
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: PDFPreviewView(viewModel: viewModel)) {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundColor(Color.theme.mintPrimary)
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { showingAddItem = true }) {
                     HStack {

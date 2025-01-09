@@ -3,11 +3,13 @@ import PDFKit
 import UniformTypeIdentifiers
 
 struct PDFPreviewView: View {
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var downloadState: DownloadState = .idle
     @State private var pdfURL: URL?
     @State private var showError = false
     @State private var errorMessage = ""
+    @Environment(\.presentationMode) var presentationMode
     
     enum DownloadState: Identifiable, Equatable {
         case idle
@@ -25,23 +27,27 @@ struct PDFPreviewView: View {
     }
 
     var body: some View {
-        VStack {
-            PDFKitView(list: viewModel.list)
-                .edgesIgnoringSafeArea(.all)
-            
-            Button(action: {
-                downloadPDF()
-            }) {
-                Text("PDF İndir")
-                    .font(.headline)
-                    .foregroundColor(Color.white)
-                    .padding()
-                    .background(Color.theme.tabBarBackground)
-                    .cornerRadius(10)
+        VStack(alignment: .leading, spacing: 0) {
+         
+            // PDF görünümü
+            VStack {
+                PDFKitView(list: viewModel.list)
+                    .edgesIgnoringSafeArea(.all)
+                
+                Button(action: {
+                    downloadPDF()
+                }) {
+                    Text("PDF İndir")
+                        .font(.headline)
+                        .foregroundColor(Color.white)
+                        .padding()
+                        .background(Color.theme.tabBarBackground)
+                        .cornerRadius(10)
+                }
+                .padding()
             }
-            .padding()
+            .background(Color.gray.opacity(0.1))
         }
-        .background(Color.gray.opacity(0.1))
         .sheet(item: Binding(
             get: { downloadState == .idle ? nil : downloadState },
             set: { _ in downloadState = .idle }
@@ -55,6 +61,23 @@ struct PDFPreviewView: View {
         } message: {
             Text(errorMessage)
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                        Text("Geri")
+                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                    }
+                }
+            }
+        }
+        .padding(.bottom,-10)
+        
     }
     
     func downloadPDF() {

@@ -6,12 +6,22 @@
 //
 
 import SwiftUI
+import RevenueCat
+import RevenueCatUI
 
 @main
 struct shoppingListApp: App {
+    
+    init() {
+        Purchases.logLevel = .debug
+        Purchases.configure(withAPIKey: "appl_RWQPbkzteEcwjyOIEIADyEoeGhX")
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .presentPaywallIfNeeded(requiredEntitlementIdentifier: "premium")
         }
     }
+    
 }

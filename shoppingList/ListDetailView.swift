@@ -98,8 +98,8 @@ struct ListDetailView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: PDFPreviewView(viewModel: viewModel)) {
-                    Image(systemName: "chevron.backward")
-                        .foregroundColor(.white)
+                    Image(systemName: "arrowshape.turn.up.right.fill")
+                        .foregroundColor(Color.theme.mintPrimary)
                 }
             }
         }
