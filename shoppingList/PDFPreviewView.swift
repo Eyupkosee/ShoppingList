@@ -1,4 +1,6 @@
 import SwiftUI
+import RevenueCatUI
+import RevenueCat
 import PDFKit
 import UniformTypeIdentifiers
 
@@ -9,13 +11,13 @@ struct PDFPreviewView: View {
     @State private var pdfURL: URL?
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showPaywall = false // Yeni ekledik
     @Environment(\.presentationMode) var presentationMode
-    
+
     enum DownloadState: Identifiable, Equatable {
         case idle
         case downloaded(URL)
         
-        // Identifiable protokolü için gerekli
         var id: String {
             switch self {
             case .idle:
@@ -27,15 +29,26 @@ struct PDFPreviewView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-         
-            // PDF görünümü
+        VStack(alignment: .leading) {
             VStack {
                 PDFKitView(list: viewModel.list)
                     .edgesIgnoringSafeArea(.all)
                 
                 Button(action: {
-                    downloadPDF()
+                    Purchases.shared.getCustomerInfo { (purchaserInfo, error) in
+                        if let error = error {
+                            print("Hata: Abonelik durumu alınırken bir sorun oluştu - \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        if purchaserInfo?.entitlements.active["premium"] != nil {
+                            self.downloadPDF()
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showPaywall = true
+                            }
+                        }
+                    }
                 }) {
                     Text("PDF İndir")
                         .font(.headline)
@@ -44,9 +57,11 @@ struct PDFPreviewView: View {
                         .background(Color.theme.tabBarBackground)
                         .cornerRadius(10)
                 }
-                .padding()
             }
             .background(Color.gray.opacity(0.1))
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
         }
         .sheet(item: Binding(
             get: { downloadState == .idle ? nil : downloadState },
@@ -69,15 +84,13 @@ struct PDFPreviewView: View {
                 }) {
                     HStack {
                         Image(systemName: "chevron.backward")
-                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                            .foregroundColor(Color.theme.mintPrimary)
                         Text("Geri")
-                            .foregroundColor(Color.theme.mintPrimary) // Tabbar ile aynı renk
+                            .foregroundColor(Color.theme.mintPrimary)
                     }
                 }
             }
         }
-        .padding(.bottom,-10)
-        
     }
     
     func downloadPDF() {
@@ -87,12 +100,10 @@ struct PDFPreviewView: View {
             return
         }
         
-        // Geçici dizini kullan
         let temporaryDirectoryURL = FileManager.default.temporaryDirectory
         let pdfURL = temporaryDirectoryURL.appendingPathComponent("ShoppingList-\(UUID().uuidString).pdf")
         
         do {
-            // PDF'i geçici dizine kaydet
             document.write(to: pdfURL)
             self.pdfURL = pdfURL
             self.downloadState = .downloaded(pdfURL)
@@ -102,6 +113,7 @@ struct PDFPreviewView: View {
         }
     }
 }
+
 
 struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
@@ -128,6 +140,7 @@ struct ShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+
 
 struct PDFKitView: UIViewRepresentable {
     let list: ShoppingList
@@ -191,4 +204,3 @@ struct PDFKitView: UIViewRepresentable {
         return PDFDocument(data: data)
     }
 }
-
