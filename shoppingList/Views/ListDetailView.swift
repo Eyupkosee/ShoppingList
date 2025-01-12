@@ -4,6 +4,7 @@ struct ListDetailView: View {
     @ObservedObject var viewModel: ListDetailViewModel
     @State private var showingAddItem = false
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var isSearchFocused: Bool
     
     var body: some View {
         ZStack {
@@ -17,6 +18,9 @@ struct ListDetailView: View {
                 endPoint: .bottomTrailing
             )
             .ignoresSafeArea()
+            .onTapGesture {
+                isSearchFocused = false
+            }
             
             ScrollView {
                 LazyVStack(spacing: 12) {

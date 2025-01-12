@@ -20,6 +20,7 @@ struct shoppingListApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light) // Zorla light mod kullan
         }
     }
     

@@ -6,6 +6,7 @@ struct AddItemView: View {
     @State private var searchText = ""
     @State private var selectedItems = Set<String>()
     @State private var selectedCategory: ProductCategory?
+    @FocusState private var isSearchFocused: Bool
     
     private let gridColumns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
     
@@ -16,6 +17,7 @@ struct AddItemView: View {
                 HStack {
                     TextField("Ürün ara veya yeni ürün ekle", text: $searchText)
                         .textFieldStyle(CustomTextFieldStyle())
+                        .focused($isSearchFocused)
                     
                     if !searchText.isEmpty {
                         Button(action: {
@@ -149,6 +151,9 @@ struct AddItemView: View {
                     .disabled(selectedItems.isEmpty)
                     .foregroundColor(selectedItems.isEmpty ? .gray : Color.theme.mintPrimary)
                 }
+            }
+            .onTapGesture {
+                isSearchFocused = false
             }
         }
     }

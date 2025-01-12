@@ -32,8 +32,14 @@ struct PDFPreviewView: View {
         VStack(alignment: .leading) {
             VStack {
                 PDFKitView(list: viewModel.list)
-                    .edgesIgnoringSafeArea(.all)
+                    .frame(height: 500)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 2)
+                    .padding()
                 
+                Spacer()
+
                 Button(action: {
                     Purchases.shared.getCustomerInfo { (purchaserInfo, error) in
                         if let error = error {
@@ -57,7 +63,7 @@ struct PDFPreviewView: View {
                         .background(Color.theme.tabBarBackground)
                         .cornerRadius(10)
                 }
-                .padding(.top,-80)
+                .padding(.bottom, 20)
             }
             .background(Color.gray.opacity(0.1))
         }
@@ -149,14 +155,35 @@ struct PDFKitView: UIViewRepresentable {
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
         pdfView.document = createPDFDocument()
+        
+        // Otomatik ölçeklendirmeyi aktif ediyoruz
         pdfView.autoScales = true
+ 
+        // PDF görünümünü her zaman açık modda göster
+        pdfView.backgroundColor = .white
+        
+        // Scroll ve sayfa gösterim ayarları
+//        pdfView.maxScaleFactor = 4.0
+//        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
+        pdfView.displayMode = .singlePageContinuous // Sürekli sayfa görünümü için değiştirdik
+        pdfView.displaysPageBreaks = true
+        pdfView.displayDirection = .vertical
+        
+        // Dark mode'dan etkilenmemesi için
+        if #available(iOS 13.0, *) {
+            pdfView.overrideUserInterfaceStyle = .light
+        }
+        
+        // Sabit boyut kısıtlamalarını kaldırıyoruz
+        pdfView.translatesAutoresizingMaskIntoConstraints = false
+        
         return pdfView
     }
 
     func updateUIView(_ uiView: PDFView, context: Context) {}
 
     func createPDFDocument() -> PDFDocument? {
-        // A4 boyutunu ayarlama
+        // A4 boyutunu ayarlama (daha küçük ölçek için değerleri düşürdük)
         let pageWidth = 8.5 * 72.0
         let pageHeight = 11 * 72.0
         let pageRect = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
@@ -164,44 +191,61 @@ struct PDFKitView: UIViewRepresentable {
         // PDF Renderer oluşturma
         let renderer = UIGraphicsPDFRenderer(bounds: pageRect)
         
+        // Sayfa başına maksimum öğe sayısı
+        let itemHeight: CGFloat = 30
+        let startY: CGFloat = 60 // Başlıktan sonraki başlangıç noktası
+        let availableHeight = pageHeight - startY - 40 // Alt ve üst kenar boşlukları için
+        let itemsPerPage = Int(availableHeight / itemHeight)
+        
         // PDF verisini oluşturma
         let data = renderer.pdfData { (context) in
-            context.beginPage()
+            // Öğeleri sayfalara böl
+            let chunks = list.items.chunked(into: itemsPerPage)
             
-            // Arka plan rengini ayarlama
-            UIColor.systemBackground.setFill()
-            context.cgContext.fill(pageRect)
-            
-            // Başlık ekleme
-            let title = "Alışveriş Listesi"
-            let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 20),
-                .foregroundColor: UIColor.label
-            ]
-            let titleString = NSAttributedString(string: title, attributes: titleAttributes)
-            let titleSize = titleString.size()
-            let titleX = (pageWidth - titleSize.width) / 2 // Başlığı ortalamak için x koordinatını ayarlama
-            titleString.draw(at: CGPoint(x: titleX, y: 20))
-            
-            // Ürünleri ekleme
-            let startY: CGFloat = 60
-            let itemHeight: CGFloat = 30
-            for (index, item) in list.items.enumerated() {
-                let yPosition = startY + CGFloat(index) * itemHeight
-                let backgroundColor = index % 2 == 0 ? UIColor.white : UIColor(white: 0.9, alpha: 1.0) // Daha açık gri
-                backgroundColor.setFill()
-                context.cgContext.fill(CGRect(x: 20, y: yPosition, width: pageWidth - 40, height: itemHeight))
+            for (pageIndex, pageItems) in chunks.enumerated() {
+                context.beginPage()
                 
-                let itemAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 16),
-                    .foregroundColor: UIColor.label
+                // Arka plan rengini beyaz olarak ayarla
+                UIColor.white.setFill()
+                context.cgContext.fill(pageRect)
+                
+                // Başlık ekleme
+                let titleAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.boldSystemFont(ofSize: 20),
+                    .foregroundColor: UIColor.black
                 ]
-                let itemString = NSAttributedString(string: item.name, attributes: itemAttributes)
-                itemString.draw(at: CGPoint(x: 30, y: yPosition + 5))
+                let title = "Alışveriş Listesi - Sayfa \(pageIndex + 1)"
+                let titleString = NSAttributedString(string: title, attributes: titleAttributes)
+                let titleSize = titleString.size()
+                let titleX = (pageWidth - titleSize.width) / 2
+                titleString.draw(at: CGPoint(x: titleX, y: 20))
+                
+                // Sayfadaki öğeleri ekleme
+                for (index, item) in pageItems.enumerated() {
+                    let yPosition = startY + CGFloat(index) * itemHeight
+                    let backgroundColor = index % 2 == 0 ? UIColor.white : UIColor(white: 0.9, alpha: 1.0)
+                    backgroundColor.setFill()
+                    context.cgContext.fill(CGRect(x: 20, y: yPosition, width: pageWidth - 40, height: itemHeight))
+                    
+                    let itemAttributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.systemFont(ofSize: 16),
+                        .foregroundColor: UIColor.black
+                    ]
+                    let itemString = NSAttributedString(string: item.name, attributes: itemAttributes)
+                    itemString.draw(at: CGPoint(x: 30, y: yPosition + 5))
+                }
             }
         }
         
-        // PDF verisini PDFDocument'e ekleme
         return PDFDocument(data: data)
+    }
+}
+
+// Array extension for chunking
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
     }
 }

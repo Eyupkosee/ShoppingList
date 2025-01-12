@@ -19,7 +19,7 @@ struct SplashView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                    Text("Shopping List")
+                    Text("Listo")
                         .font(.system(size: 48))
                         .fontWeight(.bold)
                         .foregroundColor(.white)

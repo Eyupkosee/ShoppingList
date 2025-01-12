@@ -19,6 +19,8 @@ struct CreateListView: View {
     @State private var showPaywall = false
     @State private var isPremiumUser = false
     
+    @FocusState private var isNameFocused: Bool
+    
     private let suggestions = [
         NSLocalizedString("Market", comment: ""),
         NSLocalizedString("Pazar", comment: ""),
@@ -44,6 +46,7 @@ struct CreateListView: View {
                     TextField("Örn: Market Alışverişi", text: $listName)
                         .textFieldStyle(CustomTextFieldStyle())
                         .textInputAutocapitalization(.words)
+                        .focused($isNameFocused)
                     
                     // Öneriler
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -89,6 +92,9 @@ struct CreateListView: View {
                 .padding(.bottom, 20)
             }
             .navigationTitle("Yeni Liste")
+            .onTapGesture {
+                isNameFocused = false
+            }
         }
         .onAppear {
             checkSubscriptionStatus()
