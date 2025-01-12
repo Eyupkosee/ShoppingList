@@ -8,15 +8,19 @@ struct ProductItem: Identifiable {
 }
 
 enum ProductCategory: String, CaseIterable {
-    case beverages = "İçecekler"
-    case fruits = "Meyveler"
-    case vegetables = "Sebzeler"
-    case dairy = "Süt Ürünleri"
-    case basicFoods = "Temel Gıdalar"
-    case meatAndProtein = "Et ve Protein"
-    case snacks = "Atıştırmalıklar"
-    case cleaning = "Temizlik"
-    case personalCare = "Kişisel Bakım"
+    case beverages = "category_beverages"
+    case fruits = "category_fruits"
+    case vegetables = "category_vegetables"
+    case dairy = "category_dairy"
+    case basicFoods = "category_basic_foods"
+    case meatAndProtein = "category_meat_protein"
+    case snacks = "category_snacks"
+    case cleaning = "category_cleaning"
+    case personalCare = "category_personal_care"
+    
+    var localizedName: String {
+        NSLocalizedString(self.rawValue, comment: "")
+    }
     
     var icon: String {
         switch self {

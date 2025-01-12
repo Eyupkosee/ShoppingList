@@ -79,7 +79,7 @@ struct HomeView: View {
             }
         } message: {
             if let list = listToDelete {
-                Text("\(list.name) listesini silmek istediğinize emin misiniz?")
+                Text("\(list.name) "+"listesini silmek istediğinize emin misiniz?")
             }
         }
     }
@@ -141,7 +141,7 @@ private struct ListCardView: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color.theme.primaryText)
                     
-                    Text("\(list.items.count) ürün")
+                    Text("\(list.items.count) "+"ürün")
                         .font(.subheadline)
                         .foregroundColor(Color.theme.secondaryText)
                 }

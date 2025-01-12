@@ -75,7 +75,7 @@ struct OnboardingView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 30)
                 } else {
-                    Button("İleri") {
+                    Button("Skip") {
                         withAnimation(.easeInOut(duration: 0.3)) {
                             currentTab += 1
                         }

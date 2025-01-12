@@ -99,7 +99,7 @@ struct AddItemView: View {
                                         .foregroundColor(.blue)
                                 }
                                 
-                                Text(category.rawValue)
+                                Text(category.localizedName)
                                     .font(.headline)
                                 
                                 Spacer()
@@ -126,7 +126,7 @@ struct AddItemView: View {
                 }
                 
                 if !selectedItems.isEmpty {
-                    Text("\(selectedItems.count) ürün seçildi")
+                    Text("\(selectedItems.count)"+"ürün seçildi")
                         .foregroundColor(.gray)
                         .padding(.vertical, 8)
                 }
@@ -207,7 +207,7 @@ struct CategoryCard: View {
                     )
                     .frame(width: 60, height: 60)
                 
-                Text(category.rawValue)
+                Text(category.localizedName)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.center)

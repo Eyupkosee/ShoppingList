@@ -12,6 +12,13 @@ struct CreateListView: View {
     @State private var listName = ""
     @Binding var selectedTab: Int
     
+    private let suggestions = [
+        NSLocalizedString("Market", comment: ""),
+        NSLocalizedString("Pazar", comment: ""),
+        NSLocalizedString("Piknik", comment: ""),
+        NSLocalizedString("Gezi", comment: "")
+    ]
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
@@ -34,7 +41,7 @@ struct CreateListView: View {
                     // Öneriler
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            ForEach(["Market", "Pazar", "Piknik", "Gezi"], id: \.self) { suggestion in
+                            ForEach(suggestions, id: \.self) { suggestion in
                                 Button(action: {
                                     listName = suggestion
                                 }) {
