@@ -22,6 +22,12 @@
             "value" : "añadir \"%@\""
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ajouter \"%@\""
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,6 +98,12 @@
             "state" : "translated",
             "value" : "%lld%%"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
+          }
         }
       }
     },
@@ -114,6 +126,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Listas de compras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listes de courses"
           }
         },
         "it" : {
@@ -163,6 +181,12 @@
             "value" : "Crea y organiza tus listas de compras fácilmente"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créez et organisez facilement vos listes de courses"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -208,6 +232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comparte tus listas de compras exportándolas en formato PDF"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagez vos listes de courses avec qui vous voulez en les exportant au format PDF"
           }
         },
         "it" : {
@@ -257,6 +287,12 @@
             "value" : "Lista de compras"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste de courses"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -302,6 +338,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No hay lista de compras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas de liste de courses"
           }
         },
         "it" : {
@@ -351,6 +393,12 @@
             "value" : "Marca y rastrea tus compras con un toque"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marquez et suivez vos achats d'un seul toucher"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -396,6 +444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accueil"
           }
         },
         "it" : {
@@ -445,6 +499,12 @@
             "value" : "Omitir"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passer"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -490,6 +550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empezar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
           }
         },
         "it" : {
@@ -539,6 +605,12 @@
             "value" : "Alimentos Básicos"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliments de base"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -584,6 +656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bebidas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boissons"
           }
         },
         "it" : {
@@ -633,6 +711,12 @@
             "value" : "Limpieza"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nettoyage"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -678,6 +762,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lácteos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produits laitiers"
           }
         },
         "it" : {
@@ -962,6 +1052,12 @@
             "value" : "añadir"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ajouter"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1007,6 +1103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añadir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter"
           }
         },
         "it" : {
@@ -1056,6 +1158,12 @@
             "value" : "Atrás"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1101,6 +1209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Viaje"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voyage"
           }
         },
         "it" : {
@@ -1150,6 +1264,12 @@
             "value" : "Error"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1194,6 +1314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Siguiente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivant"
           }
         },
         "it" : {
@@ -1243,6 +1369,12 @@
             "value" : "Empieza creando tu primera lista de compras"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencez par créer votre première liste de courses"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1290,6 +1422,12 @@
             "value" : "Cancelar"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1312,53 +1450,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İptal"
-          }
-        }
-      }
-    },
-    "Kaydet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speichern"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salva"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "저장"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kaydet"
           }
         }
       }
@@ -1826,6 +1917,46 @@
         }
       }
     },
+    "Parti" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Party"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fiesta"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パーティー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파티"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parti"
+          }
+        }
+      }
+    },
     "Pazar" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2232,7 +2363,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "分かった。"
           }
         },
         "ko" : {
@@ -2245,6 +2376,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tamam"
+          }
+        }
+      }
+    },
+    "Tatil" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urlaub"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vacaciones"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vacanze"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "休日"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "휴일"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tatil"
           }
         }
       }

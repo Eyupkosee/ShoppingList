@@ -214,7 +214,7 @@ struct PDFKitView: UIViewRepresentable {
                     .font: UIFont.boldSystemFont(ofSize: 20),
                     .foregroundColor: UIColor.black
                 ]
-                let title = "Alışveriş Listesi - Sayfa \(pageIndex + 1)"
+                let title = "Listo - Sayfa \(pageIndex + 1)"
                 let titleString = NSAttributedString(string: title, attributes: titleAttributes)
                 let titleSize = titleString.size()
                 let titleX = (pageWidth - titleSize.width) / 2

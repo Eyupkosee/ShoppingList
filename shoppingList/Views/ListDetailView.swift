@@ -1,47 +1,90 @@
 import SwiftUI
 
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                     to: nil,
+                                     from: nil,
+                                     for: nil)
+    }
+}
+#endif
+
 struct ListDetailView: View {
     @ObservedObject var viewModel: ListDetailViewModel
+    @State private var searchText = ""
     @State private var showingAddItem = false
+    @State private var showingPDFPreview = false
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var isSearchFocused: Bool
     
+    var filteredItems: [ShoppingItem] {
+        if searchText.isEmpty {
+            return viewModel.list.items
+        } else {
+            return viewModel.list.items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
     var body: some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.blue.opacity(0.1),
-                    Color.mint.opacity(0.1),
-                    Color.teal.opacity(0.1)
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            .onTapGesture {
-                isSearchFocused = false
-            }
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    hideKeyboard()
+                }
             
-            ScrollView {
-                LazyVStack(spacing: 12) {
-                    ForEach(viewModel.list.items) { item in
-                        ItemRow(item: item, onToggle: {
-                            viewModel.toggleItem(item)
-                        })
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                if let index = viewModel.list.items.firstIndex(where: { $0.id == item.id }) {
-                                    viewModel.deleteItems(at: IndexSet([index]))
-                                }
-                            } label: {
-                                Label("Sil", systemImage: "trash")
+            VStack(spacing: 0) {
+                // Özel arama çubuğu
+                HStack {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .padding(.leading, 8)
+                        
+                        TextField("Ürün ara", text: $searchText)
+                            .autocapitalization(.none)
+                            .focused($isSearchFocused)
+                        
+                        if !searchText.isEmpty {
+                            Button(action: { searchText = "" }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8)
                             }
                         }
                     }
+                    .padding(.vertical, 8)
+                    .background(Color(.systemBackground))
+                    .cornerRadius(12)
+                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
                 }
                 .padding()
+                
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(filteredItems) { item in
+                            ItemRow(item: item, onToggle: {
+                                viewModel.toggleItem(item)
+                            })
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    if let index = viewModel.list.items.firstIndex(where: { $0.id == item.id }) {
+                                        viewModel.deleteItems(at: IndexSet([index]))
+                                    }
+                                } label: {
+                                    Label("Sil", systemImage: "trash")
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(viewModel.list.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.theme.mintPrimary, for: .navigationBar)
@@ -84,6 +127,10 @@ struct ListDetailView: View {
         .sheet(isPresented: $showingAddItem) {
             AddItemView(viewModel: viewModel)
         }
+    }
+    
+    private func hideKeyboard() {
+        isSearchFocused = false
     }
 }
 
@@ -145,5 +192,4 @@ struct ItemRow: View {
                 y: 2
             )
         }
-    }
-} 
+    } 

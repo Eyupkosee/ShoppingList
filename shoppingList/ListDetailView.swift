@@ -6,7 +6,7 @@ struct ListDetailView: View {
     @State private var showingAddItem = false
     @State private var showingPDFPreview = false
     @Environment(\.presentationMode) var presentationMode
-    
+
     var filteredItems: [ShoppingItem] {
         if searchText.isEmpty {
             return viewModel.list.items
@@ -19,7 +19,7 @@ struct ListDetailView: View {
         ZStack {
             Color(.systemGroupedBackground)
                 .ignoresSafeArea()
-            
+               
             VStack(spacing: 0) {
                 // Özel arama çubuğu
                 HStack {
@@ -30,6 +30,7 @@ struct ListDetailView: View {
                         
                         TextField("Ürün ara", text: $searchText)
                             .autocapitalization(.none)
+                            .textFieldStyle(PlainTextFieldStyle())
                         
                         if !searchText.isEmpty {
                             Button(action: { searchText = "" }) {
@@ -141,3 +142,4 @@ struct ItemRow: View {
         .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
 }
+

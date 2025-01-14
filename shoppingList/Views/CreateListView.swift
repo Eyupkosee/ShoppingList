@@ -25,7 +25,9 @@ struct CreateListView: View {
         NSLocalizedString("Market", comment: ""),
         NSLocalizedString("Pazar", comment: ""),
         NSLocalizedString("Piknik", comment: ""),
-        NSLocalizedString("Gezi", comment: "")
+        NSLocalizedString("Gezi", comment: ""),
+        NSLocalizedString("Parti", comment: ""),
+        NSLocalizedString("Tatil", comment: "")
     ]
     
     var body: some View {
@@ -92,6 +94,7 @@ struct CreateListView: View {
                 .padding(.bottom, 20)
             }
             .navigationTitle("Yeni Liste")
+            .contentShape(Rectangle())
             .onTapGesture {
                 isNameFocused = false
             }
