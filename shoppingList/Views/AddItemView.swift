@@ -128,7 +128,7 @@ struct AddItemView: View {
                 }
                 
                 if !selectedItems.isEmpty {
-                    Text("\(selectedItems.count)"+"ürün seçildi")
+                    Text("\(selectedItems.count)"+" Product selected")
                         .foregroundColor(.gray)
                         .padding(.vertical, 8)
                 }

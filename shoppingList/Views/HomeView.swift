@@ -171,7 +171,7 @@ private struct ListCardView: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color.theme.primaryText)
                     
-                    Text("\(list.items.count) "+"ürün")
+                    Text("\(list.items.count) "+"Product")
                         .font(.subheadline)
                         .foregroundColor(Color.theme.secondaryText)
                 }
